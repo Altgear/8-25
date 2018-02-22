@@ -37,16 +37,18 @@ public:
     complex_t div( complex_t &other) const
 {
 	complex_t result;
-	result.real = (this->real *other.real + this->imag*other.imag) / (other.real * other.real + other.imag * other.imag);
-	result.imag = (this->imag *other.real - this->real*other.imag) / (other.real * other.real + other.imag * other.imag);
+	result.real = (this->real *other.real + this->imag*other.imag) 
+                / (other.real * other.real + other.imag * other.imag);
+	result.imag = (this->imag *other.real - this->real*other.imag) 
+                / (other.real * other.real + other.imag * other.imag);
 	return  result;
 }
 
-    std::ostream & write( std::ostream & stream, complex_t complex ) const// complex_t const 
+    std::ostream & write( std::ostream & stream ) const// complex_t const 
     {
         return stream << '(' << real << ", " << imag << ')';
     }
-    std::istream & read( std::istream & stream, complex_t & complex ) const
+    std::istream & read( std::istream & stream ) //     const
     {
         char symbol;
         float real;
@@ -59,8 +61,8 @@ public:
             stream >> symbol && symbol == ')')
         {
 
-            complex.real = real;
-            complex.imag = imag;
+            this->real = real;
+            this->imag = imag;
 
         } else
         {
@@ -101,30 +103,30 @@ unsigned int complex_t::count=0;
         complex_t complex2;	
 	char op;
         
-	if( complex1.read( stream, complex1 ) && 
+	if( complex1.read( stream ) && 
 	    stream >> op && (op == '+' || op == '-' || op == '*' || op == '/') &&
-	    complex2.read( stream, complex2 )) 
+	    complex2.read( stream )) 
 	{
 		switch (op)
 		{
 			case '+': {
 				auto result = complex1.add( complex2);  
-				result.write(cout, complex1); 
+				result.write(cout); 
 				break; 
 			}
 			case '-': {
 				auto result = complex1.sub( complex2);  
-				result.write(cout, complex1); 
+				result.write(cout); 
 				break; 
 			}
 			case '*': {
 				auto result = complex1.mult( complex2);  
-				result.write(cout, complex1); 
+				result.write(cout); 
 				break; 
 			}
 			case '/': {
 				auto result = complex1.div(complex2); 
-				result.write(cout, complex1);  
+				result.write(cout);  
 				break; 
 			}
 		}

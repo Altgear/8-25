@@ -7,6 +7,8 @@
 #include <fstream>
 
 
+
+
 const std::string result = "result.txt"; //программа создаёт файл с результатом действий с матрицами
 
 class matrix_t {
@@ -16,7 +18,7 @@ public:
     unsigned int rows;
     unsigned int collumns;
 
-    matrix_t add(matrix_t const & other) {
+    matrix_t add(matrix_t const & other) const {
 
         matrix_t new_mat(rows, collumns); //выделение памяти >> constr/destr+
 
@@ -28,7 +30,7 @@ public:
         return new_mat;
     }
 
-    matrix_t sub(const matrix_t & other) {
+    matrix_t sub(const matrix_t & other) const {
         matrix_t new_mat(rows, collumns); //выделение памяти >> constr/destr+
 
         for ( unsigned int i = 0; i < rows; i++ ) {
@@ -39,7 +41,7 @@ public:
         return new_mat;
     }
 
-    matrix_t mul(matrix_t & other) {
+    matrix_t mul(matrix_t & other) const {
         matrix_t new_mat(rows, other.collumns); //выделение памяти >> constr/destr
         auto common_row_and_col = collumns; //!!!!
 
@@ -56,7 +58,7 @@ public:
 
     }
 
-    matrix_t trans() {
+    matrix_t trans() const {
         matrix_t new_mat(collumns, rows);
         for ( unsigned int i = 0; i < collumns; i++ ) {
             for ( unsigned int j = 0; j < rows; j++ ) {
@@ -181,19 +183,6 @@ public:
         }
     }// через fout_write()
 
-    /*  matrix_t(std::ifstream & stream) {//конструктор1
-          unsigned char coma;
-          if ( stream >> rows && stream >> coma && coma == ',' && stream >> collumns ) {
-              filler();
-              read(stream);
-          } else {
-              stream.setstate(std::ios::failbit);
-              std::cout << "An error has occured while reading input data";
-              exit(EXIT_FAILURE);
-          }
-      }*/
-    //to delte
-
     matrix_t(unsigned int rows, unsigned int collumns) {//конструктор2
         this->rows = rows;
         this->collumns = collumns;
@@ -201,7 +190,15 @@ public:
     }
 
     matrix_t(const matrix_t & other) {//констр копир-я
-        *this = other; //перегруж-я опер-я присв-я
+        rows = other.rows;
+        collumns = other.collumns;
+        data = new float *[rows];
+        for ( unsigned int i = 0; i < rows; ++i ) {
+            data[i] = new float[collumns];
+            for ( unsigned int j = 0; j < collumns; ++j ) {
+                data[i][j] = other.data[i][j];
+            }
+        }
     }
 
     matrix_t() {
@@ -240,7 +237,7 @@ public:
         }
     }
 
-    void destroy_data() {
+    void destroy_data() const {
         for ( unsigned int i = 0; i < rows; ++i ) {
             delete[] data[i];
         }

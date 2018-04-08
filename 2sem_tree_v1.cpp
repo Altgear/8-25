@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 class tree_t {
 private:
@@ -17,6 +18,7 @@ private:
     void print_tree(std::ostream & stream, const node_t * branch,
         unsigned int depth) const;
 public:
+    tree_t();
     tree_t(int val);
     ~tree_t();
     void insert(int value); //done
@@ -24,20 +26,20 @@ public:
     void print(std::ostream & stream) const; //done~
     void delete_branch(node_t * branch);
 
-
+    void del_rt();
 };
 
 int main() {
     char op;
     std::string line;
     tree_t * origin = nullptr;
-    int value = 0XFFFFFF;// error
+    int value = 0XFFFFFF; // error
     for (;; ) {
-        
+
         std::getline(std::cin, line);
         std::istringstream stream(line);
         //try
-        if (!(stream >> op))
+        if ( !( stream >> op ) )
             op = 'e'; //error
         //
         switch ( op ) {
@@ -76,6 +78,7 @@ int main() {
             }
             case 'q':
             {
+                origin->~tree_t();
                 return 0;
             }
             default:
@@ -164,8 +167,7 @@ void tree_t::delete_branch(node_t * branch) {
     if ( branch->right != nullptr ) {
         delete_branch(branch->right);
     }
-    delete[] branch->left;
-    delete[] branch->right;
+    delete[] branch;
     return;
 
 }
@@ -177,10 +179,19 @@ tree_t::tree_t(int val) {
     root_->right = nullptr;
 }
 
+tree_t::tree_t() {
+    root_ = nullptr;
+}
+
 void tree_t::print(std::ostream & stream) const {
     print_tree(stream, root_, 4); // 4 init branch length
 }
 
+/*void tree_t::print(std::ostream & stream) const {
+    
+}*/
+
 tree_t::~tree_t() {
     delete_branch(root_);
 }
+

@@ -1,5 +1,4 @@
 #include <cstdlib>
-#include <stdio.h>
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -46,8 +45,8 @@ int main() {
             case '+':
 
             {
-
-                //try
+                //TRY
+                stream.exceptions(std::ios_base::failbit);
                 stream >> value;
                 if ( origin == nullptr ) {
                     origin = new tree_t(value);
@@ -167,7 +166,7 @@ void tree_t::delete_branch(node_t * branch) {
     if ( branch->right != nullptr ) {
         delete_branch(branch->right);
     }
-    delete[] branch;
+    delete branch;
     return;
 
 }
@@ -192,6 +191,8 @@ void tree_t::print(std::ostream & stream) const {
 }*/
 
 tree_t::~tree_t() {
-    delete_branch(root_);
+    if ( root_ ) {
+        delete_branch(root_);
+    }
 }
 

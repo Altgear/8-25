@@ -32,7 +32,7 @@ int main() {
     char op;
     std::string line;
     tree_t * origin = nullptr;
-    int value = 0XFFFFFF; // error
+    int value;
     for (;; ) {
 
         std::getline(std::cin, line);
@@ -46,7 +46,7 @@ int main() {
 
             {
                 //TRY
-                stream.exceptions(std::ios_base::failbit);
+                stream.exceptions(std::ios_base::failbit); //защита от value без считывания
                 stream >> value;
                 if ( origin == nullptr ) {
                     origin = new tree_t(value);

@@ -24,8 +24,6 @@ public:
     bool find(int value) const noexcept; // not shure|+~
     void print(std::ostream & stream) const; //done~
     void delete_branch(node_t * branch);
-
-    void del_rt();
 };
 
 int main() {
@@ -77,7 +75,6 @@ int main() {
             }
             case 'q':
             {
-                origin->~tree_t();
                 return 0;
             }
             default:
